@@ -1,0 +1,8 @@
+<div class="content-section">
+  <h3>Latest Post</h3>
+  {% if latest_post %}
+    <a href="{{ latest_post.get_absolute_url }}">{{ latest_post.title }}</a>
+  {% else %}
+    <p>No posts available.</p>
+  {% endif %}
+</div>

@@ -56,3 +56,8 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html', {'title':'about'})
+
+
+def sidebar_view(request):
+    latest_post = Post.objects.latest('pub_date')  # Fetch the latest post based on the publication date
+    return render(request, 'blog/sidebar.html', {'latest_post': latest_post})

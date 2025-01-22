@@ -9,6 +9,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
 
     <link rel="stylesheet" href="{% static 'blog/main.css' %}">
 
@@ -17,32 +20,33 @@
   {%else%}
     <title>BlogStream</title>
   {%endif%}
+
 </head>
 <body>
         <header class="site-header">
-         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top bg-dark">
             <div class="container">
-             <a class="navbar-brand mr-4" href="{%url 'blog-home'%}">BlogStream</a>
+             <a class="navbar-brand mr-4 " href="{%url 'blog-home'%}"><i class="bi bi-book-half">&nbsp;<b>BlogStream</b></i></a>
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
              <span class="navbar-toggler-icon"></span>
              </button>
              <div class="collapse navbar-collapse" id="navbarToggle">
                  <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{%url 'blog-home'%}">Home</a>
-              <a class="nav-item nav-link" href="{%url 'blog-about'%}">About</a>
+              <a class="nav-item nav-link" href="{%url 'blog-home'%}"><i class="bi bi-house-fill">&nbsp;Home</i></a>
+              <a class="nav-item nav-link" href="{%url 'blog-about'%}"><i class="bi bi-info-circle-fill">&nbsp;About</i></a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {%if user.is_authenticated%}
-                 <a class="nav-item nav-link" href="{%url 'post-create'%}">New Post</a>
+                 <a class="nav-item nav-link" href="{%url 'post-create'%}"><i class="bi bi-plus-square">&nbsp;New Post</i></a>
                  <form method="post" action="{% url 'logout' %}" style="display: inline;">
                      {% csrf_token %}
-                    <button type="submit" class="btn btn-link nav-item nav-link">Logout</button>
+                    <button type="submit" class="btn btn-link nav-item nav-link"><i class="bi bi-box-arrow-right">&nbsp;Logout</i></button>
                  </form>
-                  <a class="nav-item nav-link" href="{%url 'profile'%}">Profile</a>
+                  <a class="nav-item nav-link" href="{%url 'profile'%}"><i class="bi bi-person-circle">&nbsp;Profile</i></a>
               {%else%}
-                  <a class="nav-item nav-link" href="{%url 'login'%}">Login</a>
-                  <a class="nav-item nav-link" href="{%url 'register'%}">Register</a>
+                  <a class="nav-item nav-link" href="{%url 'login'%}"><i class="bi bi-box-arrow-in-right">&nbsp;Login</i></a>
+                  <a class="nav-item nav-link" href="{%url 'register'%}"><i class="bi bi-pencil-square">&nbsp;Register</i></a>
               {%endif%}
             </div>
           </div>
@@ -64,19 +68,30 @@
             {%endif%}
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-4">
-          <div class="content-section">
-            <h3>Our Sidebar</h3>
-            <p class='text-muted'>You can put any information here you'd like.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest Posts</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
-              </ul>
-            </p>
-          </div>
-        </div>
+
+
+
+         <!--sidebar-->
+
+
+            <div class="col-md-4">
+                <div class="content-section">
+                    <h2>All Authors</h2>
+                    <ul class="list-group">
+                        {% for author in authors %}
+                        <li class="list-group-item">
+                            <div class="media">
+                                <img class="rounded-circle mr-3" src="{{ author.profile.image.url }}" alt="Profile Picture" width="50" height="50">
+                                <div class="media-body">
+                                    <h5><a href="{% url 'author-posts' author.username %}">{{ author.username }}</a></h5>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
       </div>
     </main>
 

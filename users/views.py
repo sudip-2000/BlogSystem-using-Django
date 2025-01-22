@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+
+from blog.models import Post
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-
-
 
 
 def register(request):
@@ -37,3 +38,25 @@ def profile(request):
         'p_form':p_form
     }
     return render(request, 'users/profile.html', context)
+
+def author_info(request, username):
+    # Fetch the user and profile based on the username
+    author = get_object_or_404(User, username=username)
+    profile=author.profile
+    context = {
+        'author': author,
+        'profile': author.profile,
+        'bio': profile.bio,
+    }
+    return render(request, 'users/author_info.html', context)
+
+
+def author_posts(request, username):
+    author = get_object_or_404(User, username=username)  # Get the user based on username
+    posts = Post.objects.filter(author=author)  # Get posts by this author
+
+    context = {
+        'author': author,
+        'posts': posts
+    }
+    return render(request, 'blog/author_posts.html', context)
